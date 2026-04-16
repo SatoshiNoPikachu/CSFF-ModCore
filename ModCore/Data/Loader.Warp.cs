@@ -17,7 +17,7 @@ public static partial class Loader
     {
         if (type.IsSubclassOf(typeof(UniqueIDScriptable)))
         {
-            var obj = _uidMap.GetValueOrDefault(key);
+            var obj = _uidMap!.GetValueOrDefault(key);
             if (obj is null) return null;
             if (type.IsInstanceOfType(obj)) return obj;
 
@@ -28,7 +28,7 @@ public static partial class Loader
             var index = key.IndexOf('|');
             if (index < 0) return Database.GetData(type, key, mod);
 
-            var typeName = key[..index];
+            var typeName = key.Substring(0, index);
             if (!DataInfos.TryGetValue(typeName, out var info))
             {
                 Plugin.Log.LogWarning($"Data type {typeName} not registered.");
@@ -36,7 +36,7 @@ public static partial class Loader
             }
 
             var targetType = info.Type;
-            if (type.IsAssignableFrom(targetType)) return Database.GetData(targetType, key[(index + 1)..], mod);
+            if (type.IsAssignableFrom(targetType)) return Database.GetData(targetType, key.Substring(index + 1), mod);
 
             Plugin.Log.LogWarning($"Cannot assign value of type {type} to {typeName}({targetType}).");
         }

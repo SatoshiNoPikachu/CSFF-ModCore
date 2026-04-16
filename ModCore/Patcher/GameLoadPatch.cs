@@ -17,7 +17,6 @@ internal static class GameLoadPatch
     [HarmonyPatch("LoadOptions")]
     [HarmonyPatch("LoadMainGameData")]
     [HarmonyPatch("LoadGameFilesData")]
-    [HarmonyPatch("ImportOldSaves")]
     public static void GameLoad_Finalizer(Exception? __exception)
     {
         if (__exception is null) return;

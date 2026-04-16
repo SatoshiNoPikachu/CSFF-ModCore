@@ -85,7 +85,7 @@ public static class TextureLoader
 
         try
         {
-            var bytes = await File.ReadAllBytesAsync(path);
+            var bytes = await ReadFileAsync(path);
             // var bytes = await ReadFileAsync(path);
             var tex = new Texture2D(0, 0, TextureFormat.RGBA32, false)
             {
@@ -113,23 +113,23 @@ public static class TextureLoader
         }
     }
 
-    // /// <summary>
-    // /// 异步读取文件
-    // /// </summary>
-    // /// <param name="path">文件路径</param>
-    // /// <returns>读取字节的任务</returns>
-    // private static async Task<byte[]> ReadFileAsync(string path)
-    // {
-    //     await using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 8192, true);
-    //     var buffer = new byte[file.Length];
-    //     var count = 0;
-    //     while (count < buffer.Length)
-    //     {
-    //         var read = await file.ReadAsync(buffer, count, buffer.Length - count);
-    //         if (read == 0) break;
-    //         count += read;
-    //     }
-    //
-    //     return buffer;
-    // }
+    /// <summary>
+    /// 异步读取文件
+    /// </summary>
+    /// <param name="path">文件路径</param>
+    /// <returns>读取字节的任务</returns>
+    private static async Task<byte[]> ReadFileAsync(string path)
+    {
+        using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 8192, true);
+        var buffer = new byte[file.Length];
+        var count = 0;
+        while (count < buffer.Length)
+        {
+            var read = await file.ReadAsync(buffer, count, buffer.Length - count);
+            if (read == 0) break;
+            count += read;
+        }
+    
+        return buffer;
+    }
 }

@@ -63,7 +63,7 @@ public static class LocalizationService
             foreach (var (key, value) in localizationDict)
             {
                 if (value.Count < 1) continue;
-                texts[$"{keyPrefix}{key}"] = regex.Replace(value[^1], "\n");
+                texts[$"{keyPrefix}{key}"] = regex.Replace(value[value.Count - 1], "\n");
             }
         }
     }

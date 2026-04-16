@@ -206,7 +206,7 @@ public static partial class Loader
 
             var jsonField = jsonData[key];
             if (!jsonField.IsObject && !jsonField.IsArray) continue;
-            var fieldName = key[..^8];
+            var fieldName = key.Substring(0, key.Length - 8);
 
             try
             {

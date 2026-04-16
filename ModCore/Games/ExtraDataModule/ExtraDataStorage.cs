@@ -64,26 +64,32 @@ public class ExtraDataStorage
     /// <param name="raw">原始数据。</param>
     /// <param name="data">提取出的数据。</param>
     /// <returns></returns>
-    public static bool TryExtractData(ReadOnlySpan<char> raw, out (string Key, string Value) data)
+    public static bool TryExtractData(string raw, out (string Key, string Value) data)
     {
         data = default;
 
-        if (!raw.StartsWith(Prefix)) return false;
+        if (string.IsNullOrEmpty(raw) || !raw.StartsWith(Prefix))
+            return false;
 
-        raw = raw[PrefixLength..];
+        var lenSepIndex = raw.IndexOf('|', PrefixLength);
+        if (lenSepIndex <= PrefixLength) return false;
 
-        var lenSepIndex = raw.IndexOf('|');
-        if (lenSepIndex <= 0) return false;
+        var keyLength = 0;
+        for (var i = PrefixLength; i < lenSepIndex; i++)
+        {
+            var c = raw[i];
+            if (c is < '0' or > '9') return false;
 
-        if (!int.TryParse(raw[..lenSepIndex], out var keyLength) || keyLength < 0) return false;
+            keyLength = keyLength * 10 + (c - '0');
+        }
 
-        raw = raw[(lenSepIndex + 1)..];
-        if (raw.Length < keyLength + 1) return false;
+        var keyStart = lenSepIndex + 1;
 
-        if (raw[keyLength] != '|') return false;
+        if (raw.Length < keyStart + keyLength + 1) return false;
+        if (raw[keyStart + keyLength] != '|') return false;
 
-        data.Key = raw[..keyLength].ToString();
-        data.Value = raw[(keyLength + 1)..].ToString();
+        data.Key = raw.Substring(keyStart, keyLength);
+        data.Value = raw.Substring(keyStart + keyLength + 1);
 
         return true;
     }

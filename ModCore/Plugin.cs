@@ -5,7 +5,7 @@ namespace ModCore;
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 internal class Plugin : BaseUnityPlugin<Plugin>
 {
-    public const string PluginGuid = "Pikachu.CSTI.ModCore";
+    public const string PluginGuid = "Pikachu.CSFF.ModCore";
     public const string PluginName = "ModCore";
     public const string PluginVersion = "0.0.0.0";
 

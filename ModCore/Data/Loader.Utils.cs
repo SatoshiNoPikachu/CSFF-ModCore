@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Threading;
 using HarmonyLib;
@@ -7,6 +8,19 @@ namespace ModCore.Data;
 
 public static partial class Loader
 {
+    /// <summary>
+    /// 字段信息缓存
+    /// </summary>
+    private static ConcurrentDictionary<Type, ConcurrentDictionary<string, Lazy<FieldInfo>>> _cacheFields = [];
+    
+    /// <summary>
+    /// 清除缓存
+    /// </summary>
+    private static void ClearCache()
+    {
+        _cacheFields = [];
+    }
+    
     /// <summary>
     /// 获取字段信息
     /// </summary>

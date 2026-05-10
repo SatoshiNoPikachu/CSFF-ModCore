@@ -101,6 +101,8 @@ public static partial class Loader
             ClearCache();
             IsLoaded = true;
 
+            UniqueIDScriptable.SortUniqueObjectList();
+
             LoadingScreen.Loaded();
         }
         catch (Exception ex)

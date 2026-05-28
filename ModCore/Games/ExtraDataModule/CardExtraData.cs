@@ -28,7 +28,7 @@ internal static class CardExtraData
         });
     }
 
-    public static void OnCardSave(InGameCardBase card, CardSaveData save)
+    public static void OnCardSave(InGameCardBase card, CardSaveDataByReference save)
     {
         var storage = ExtraDataStorage.GetStorage(card);
         if (storage is null) return;

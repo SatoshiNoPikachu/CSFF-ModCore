@@ -12,14 +12,14 @@ internal static class InGameCardBasePatch
         CardExtraData.OnCardInit(__instance, _CollectionDrops);
     }
 
-    [HarmonyPostfix, HarmonyPatch("Save")]
-    public static void Save_Postfix(InGameCardBase __instance, CardSaveData __result)
+    [HarmonyPostfix, HarmonyPatch("SaveByRef")]
+    public static void Save_Postfix(InGameCardBase __instance, CardSaveDataByReference __result)
     {
         CardExtraData.OnCardSave(__instance, __result);
     }
 
-    [HarmonyPostfix, HarmonyPatch("SaveInventory")]
-    public static void SaveInventory_Postfix(InGameCardBase __instance, InventoryCardSaveData __result)
+    [HarmonyPostfix, HarmonyPatch("SaveInventory", typeof(List<InventoryCardSaveDataByReference>), typeof(bool))]
+    public static void SaveInventory_Postfix(InGameCardBase __instance, InventoryCardSaveDataByReference __result)
     {
         CardExtraData.OnCardSave(__instance, __result);
     }

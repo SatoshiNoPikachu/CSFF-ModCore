@@ -286,13 +286,13 @@ public static partial class Loader
 
         allUidObj.AddRange(uidObjs);
 
-        await taskRes;
+        await taskRes.ConfigureAwait(false);
 
         await Task.Run(() =>
         {
             Parallel.ForEach(_preloadData, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
                 context => FixData(context.Obj, context.JsonData, null));
-        });
+        }).ConfigureAwait(false);
 
         var sw = Stopwatch.StartNew();
         var maxSemaphoreNum = Environment.ProcessorCount;
@@ -304,12 +304,12 @@ public static partial class Loader
         {
             foreach (var context in contexts.Where(context => context.Valid))
             {
-                await semaphore.WaitAsync();
+                await semaphore.WaitAsync().ConfigureAwait(false);
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        var json = await File.ReadAllTextAsync(context.Path);
+                        var json = await File.ReadAllTextAsync(context.Path).ConfigureAwait(false);
                         FixData(context.Obj, JsonMapper.ToObject(json), mod);
                     }
                     catch (Exception ex)
@@ -330,7 +330,7 @@ public static partial class Loader
 
         if (semaphore.CurrentCount != maxSemaphoreNum)
         {
-            await tcs.Task;
+            await tcs.Task.ConfigureAwait(false);
         }
 
         tcs.TrySetResult(true);

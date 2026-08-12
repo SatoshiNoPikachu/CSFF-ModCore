@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace ModCore.Games.Equip;
+namespace ModCore.Games.EquipEx;
 
 public class CharacterScreenEx : MBSingleton<CharacterScreenEx>
 {

@@ -25,6 +25,6 @@ internal class Plugin : BaseUnityPlugin<Plugin>
 
         LocalizationService.Init();
 
-        // Loader.UidObjInitEvent += DataRegister.OnUidObjInit;
+        Loader.UidObjInitEvent += DataRegister.OnUidObjInit;
     }
 }
